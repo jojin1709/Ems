@@ -1,0 +1,11 @@
+body {
+  background-color: black !important;
+  color: white !important;
+  margin: 0;
+  padding: 0;
+}
+
+.main-content {
+  min-height: 80vh;
+  padding-top: 80px; /* Space for the fixed header */
+}
