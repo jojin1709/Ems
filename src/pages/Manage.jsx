@@ -1,48 +1,42 @@
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 import Form from "react-bootstrap/Form";
 import { useParams, useNavigate } from "react-router-dom";
 
-function Manage() {
+function Manage({ users, setUsers }) {
   const { id } = useParams();
   const navigate = useNavigate();
+  const selectedUser = users.find((user) => String(user.id) === id);
 
-  // 🔥 SAME AS TEACHER (userData name)
-  const [userData, setUserData] = useState({
-    username: "",
-    email: "",
-    salary: "",
-  });
+  const [userData, setUserData] = useState(
+    selectedUser || {
+      username: "",
+      email: "",
+      salary: "",
+    },
+  );
 
-  // ✅ LIVE LOGGING (IMPORTANT)
-  useEffect(() => {
-    console.log("LIVE DATA:", userData);
-  }, [userData]);
-
-  // ✅ EDIT MODE
-  useEffect(() => {
-    if (id) {
-      setUserData({
-        username: "Max_Power",
-        email: "max@example.com",
-        salary: "5000",
-      });
-    }
-  }, [id]);
-
-  // ✅ SUBMIT
   const handleSubmit = (e) => {
     e.preventDefault();
 
     if (id) {
-      console.log("UPDATED USER:", userData);
+      setUsers((allUsers) =>
+        allUsers.map((user) =>
+          String(user.id) === id ? { ...user, ...userData } : user,
+        ),
+      );
     } else {
-      console.log("ADDED USER:", userData);
+      setUsers((allUsers) => [
+        ...allUsers,
+        {
+          ...userData,
+          id: Date.now(),
+        },
+      ]);
     }
 
     navigate("/dashboard");
   };
 
-  // ✅ RESET
   const handleReset = () => {
     setUserData({
       username: "",
