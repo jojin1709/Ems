@@ -1,4 +1,3 @@
-import React from "react";
 import { Link } from "react-router-dom";
 
 function Home() {
@@ -10,7 +9,7 @@ function Home() {
           marginTop: "70px", // space for fixed header
           height: "450px",
           background:
-            'url("https://www.shutterstock.com/image-photo/team-young-european-man-latin-600nw-2682189889.jpg")',
+            'url("https://images.unsplash.com/photo-1769740333462-9a63bfa914bc?auto=format&fit=crop&fm=jpg&q=80&w=1600")',
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
