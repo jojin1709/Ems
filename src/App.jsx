@@ -4,7 +4,6 @@ import "./App.css";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 
-// pages (DON'T TOUCH THEM)
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import User from "./pages/User";
@@ -22,7 +21,12 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/user" element={<User />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/manager" element={<Manage />} />
+
+          {/* ADD */}
+          <Route path="/add" element={<Manage />} />
+
+          {/* EDIT */}
+          <Route path="/edit/:id" element={<Manage />} />
         </Routes>
       </div>
 
