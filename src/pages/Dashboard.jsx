@@ -1,17 +1,42 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { deleteUserAPI, getAllUsersAPI } from "../services/allAPI";
 
-function Dashboard({ users, setUsers }) {
-  const handleDelete = (id) => {
-    setUsers((allUsers) => allUsers.filter((user) => user.id !== id));
+function Dashboard() {
+  const [allUsers, setAllUsers] = useState([]);
+
+  const getUserId = (user) => user.id || user._id;
+
+  useEffect(() => {
+    const getUsers = async () => {
+      try {
+        const result = await getAllUsersAPI();
+        if (result.status >= 200 && result.status < 300) {
+          setAllUsers(result.data);
+        }
+      } catch (err) {
+        console.log("Error fetching users:", err);
+      }
+    };
+
+    getUsers();
+  }, []);
+
+  const handleDelete = async (id) => {
+    try {
+      const result = await deleteUserAPI(id);
+      if (result.status >= 200 && result.status < 300) {
+        setAllUsers(allUsers.filter((user) => getUserId(user) !== id));
+      }
+    } catch (err) {
+      console.log("Error deleting user:", err);
+    }
   };
 
   return (
     <div className="container">
-      {/* Title Section */}
       <div className="d-flex justify-content-between mt-5 align-items-center">
         <h1>Welcome ADMIN</h1>
-
-        {/* ADD USER */}
         <Link to="/add" className="btn btn-primary">
           + ADD USER
         </Link>
@@ -32,35 +57,35 @@ function Dashboard({ users, setUsers }) {
           </thead>
 
           <tbody>
-            {users.length > 0 ? (
-              users.map((user) => (
-                <tr key={user.id}>
-                  <td>{user.id}</td>
-                  <td>{user.username}</td>
-                  <td>{user.email}</td>
-                  <td>${user.salary}</td>
+            {allUsers.length > 0 ? (
+              allUsers.map((user) => {
+                const userId = getUserId(user);
 
-                  <td>
-                    <div className="d-flex gap-3">
-                      {/* EDIT */}
-                      <Link
-                        to={`/edit/${user.id}`}
-                        className="btn btn-outline-warning btn-sm"
-                      >
-                        <i className="fa-solid fa-pen-to-square"></i>
-                      </Link>
-
-                      {/* DELETE */}
-                      <button
-                        className="btn btn-outline-danger btn-sm"
-                        onClick={() => handleDelete(user.id)}
-                      >
-                        <i className="fa-solid fa-trash"></i>
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))
+                return (
+                  <tr key={userId}>
+                    <td className="text-break">{userId}</td>
+                    <td>{user.username}</td>
+                    <td>{user.email}</td>
+                    <td>${user.salary}</td>
+                    <td>
+                      <div className="d-flex gap-3">
+                        <Link
+                          to={`/edit/${userId}`}
+                          className="btn btn-outline-warning btn-sm"
+                        >
+                          <i className="fa-solid fa-pen-to-square"></i>
+                        </Link>
+                        <button
+                          className="btn btn-outline-danger btn-sm"
+                          onClick={() => handleDelete(userId)}
+                        >
+                          <i className="fa-solid fa-trash"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })
             ) : (
               <tr>
                 <td colSpan="5" className="text-center">
