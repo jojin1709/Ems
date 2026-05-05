@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const serverURL = "http://localhost:3001";
+const serverURL = "https://ems-server-i3td.onrender.com";
 
 // get all users api : called by dashboard component when it opens
 export const getAllUsersAPI = async () => {
